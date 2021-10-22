@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "Resources": [
+    {
+      "TargetService": {
+        "Type": "AWS::ECS::Service",
+        "Properties": {
+          "TaskDefinition": "arn:aws:ecs:ap-south-1:519150723390:task-definition/ENV-SERVICE",
+          "LoadBalancerInfo": {
+            "ContainerName": "ENV-SERVICE",
+            "ContainerPort": 80
+          },
+          "PlatformVersion": null
+        }
+      }
+    }
+  ]
+}

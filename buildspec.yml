@@ -1,0 +1,47 @@
+version: 0.2
+
+env:
+
+  shell: bash
+
+  variables:
+     REPOSITORY_URI: $REPOSITORY_URI
+     SERVICE: $SERVICE
+     ENV: $ENV
+  
+phases:
+  pre_build:
+    commands:
+      #### login to AWS ECR
+      - echo login to AWS ECR service
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+  build:
+    commands:
+      ### building docker image and tagging docker image
+      - echo building docker image and tagging docker image
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-$CODEBUILD_BUILD_NUMBER .
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-latest
+
+      ### Update Task Definition
+      - echo updating task-definition.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.json
+      - sed -i s/ENV/$ENV/g task-definition.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.json
+
+      ### Update Appspec Script
+      - echo updating appspec.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.json
+      - sed -i s/ENV/$ENV/g appspec.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.json
+      
+  post_build:
+    commands:
+      ### pushing docker images to AWS ECR
+      - echo pushing docker images AWS ECR
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-latest
+
+artifacts:
+  files:
+    - '**.*'
