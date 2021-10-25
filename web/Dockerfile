@@ -15,6 +15,7 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-cleanup && \
     rm -rf /tmp/pkg /var/cache/apt
 
-EXPOSE 80 443
+EXPOSE 80
 
-VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
+#VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
+CMD [ "npm", "run", "start" ]
