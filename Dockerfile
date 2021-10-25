@@ -4,6 +4,8 @@ FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
 COPY /web/rootfs/ /
+RUN cp env.example .env
+
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web socat && \
