@@ -5,6 +5,8 @@ FROM ${JITSI_REPO}/base:${BASE_TAG}
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
 COPY /web/rootfs/ /
 RUN cp env.example .env
+RUN cp gen-passwords.sh gen-passwords.sh
+RUN ./gen-passwords.sh
 
 
 RUN apt-dpkg-wrap apt-get update && \
@@ -19,5 +21,5 @@ RUN apt-dpkg-wrap apt-get update && \
 
 EXPOSE 80
 
-VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
-#CMD [ "npm", "run", "start" ]
+#VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
+CMD [ "npm", "run", "start" ]
