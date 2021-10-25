@@ -17,5 +17,5 @@ RUN apt-dpkg-wrap apt-get update && \
 
 EXPOSE 80
 
-#VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
-CMD [ "npm", "run", "start" ]
+VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
+#CMD [ "npm", "run", "start" ]
