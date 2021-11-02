@@ -46,10 +46,10 @@ phases:
 
       ### Update jvb Task Definition
       - echo updating task-definition.jbv.json with evnvironment name service name and repository-uri
-      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.jbv.json
-      - sed -i s/ENV/$ENV/g task-definition.jbv.json
-      - sed -i s/SERVICE/$SERVICE/g task-definition.jbv.json
-      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.jbv.json
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.jvb.json
+      - sed -i s/ENV/$ENV/g task-definition.jvb.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.jvb.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.jvb.json
 
       ### Update jvb Appspec Script
       - echo updating appspec.jvb.json with evnvironment name and service name
