@@ -19,15 +19,15 @@ phases:
     commands:
       ### building docker image and tagging docker image
       - echo building docker image and tagging docker image
-      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER /web/.
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER ./web/.
       - docker tag $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-web-latest
-      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER /jvb/.
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER ./jvb/.
       - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jvb-latest
-      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER /jicofo/.
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER ./jicofo/.
       - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jicofo-latest
-      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER /prosody/.
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER ./prosody/.
       - docker tag $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-prosody-latest
-      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER /jibri/.
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER ./jibri/.
       - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jibri-latest
       
 
