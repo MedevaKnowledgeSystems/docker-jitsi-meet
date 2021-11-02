@@ -1,0 +1,28 @@
+{
+    "executionRoleArn": "arn:aws:iam::519150723390:role/medeva-ecs-task-execution-Role",
+    "containerDefinitions": [
+      {
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/ENV-SERVICE-prosody",
+            "awslogs-region": "ap-south-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "portMappings": [
+          {
+            "protocol": "tcp",
+            "containerPort": 80
+          }
+        ],
+        "cpu": 256,
+        "memory": 512,
+        "image": "519150723390.dkr.ecr.ap-south-1.amazonaws.com/SERVICE:ENV-prosody-latest",
+        "essential": true,
+        "name": "ENV-SERVICE-prosody"
+      }
+    ],
+    "family": "ENV-SERVICE-prosody",
+  "networkMode": "awsvpc"
+}

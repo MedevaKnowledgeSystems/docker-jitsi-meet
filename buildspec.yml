@@ -1,0 +1,118 @@
+version: 0.2
+
+env:
+
+  shell: bash
+
+  variables:
+     REPOSITORY_URI: $REPOSITORY_URI
+     SERVICE: $SERVICE
+     ENV: $ENV
+  
+phases:
+  pre_build:
+    commands:
+      #### login to AWS ECR
+      - echo login to AWS ECR service
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+  build:
+    commands:
+      ### building docker image and tagging docker image
+      - echo building docker image and tagging docker image
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER /web/.
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-web-latest
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER /jvb/.
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jvb-latest
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER /jicofo/.
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jicofo-latest
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER /prosody/.
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-prosody-latest
+      - docker build -t $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER /jibri/.
+      - docker tag $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER $REPOSITORY_URI/$SERVICE:$ENV-jibri-latest
+      
+
+      ### Update web Task Definition
+      - echo updating task-definition.web.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.web.json
+      - sed -i s/ENV/$ENV/g task-definition.web.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.web.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.web.json
+
+      ### Update web Appspec Script
+      - echo updating appspec.web.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.web.json
+      - sed -i s/ENV/$ENV/g appspec.web.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.web.json
+
+      ### Update jvb Task Definition
+      - echo updating task-definition.jbv.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.jbv.json
+      - sed -i s/ENV/$ENV/g task-definition.jbv.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.jbv.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.jbv.json
+
+      ### Update jvb Appspec Script
+      - echo updating appspec.jvb.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.jvb.json
+      - sed -i s/ENV/$ENV/g appspec.jvb.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.jvb.json
+
+      ### Update jicofo Task Definition
+      - echo updating task-definition.jicofo.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.jicofo.json
+      - sed -i s/ENV/$ENV/g task-definition.jicofo.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.jicofo.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.jicofo.json
+
+      ### Update web Appspec Script
+      - echo updating appspec.jicofo.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.jicofo.json
+      - sed -i s/ENV/$ENV/g appspec.jicofo.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.jicofo.json
+
+      ### Update jicofo Task Definition
+      - echo updating task-definition.prosody.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.prosody.json
+      - sed -i s/ENV/$ENV/g task-definition.prosody.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.prosody.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.prosody.json
+
+      ### Update web Appspec Script
+      - echo updating appspec.prosody.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.prosody.json
+      - sed -i s/ENV/$ENV/g appspec.prosody.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.prosody.json
+
+      ### Update jicofo Task Definition
+      - echo updating task-definition.jibri.json with evnvironment name service name and repository-uri
+      - sed -i s/latest/$CODEBUILD_BUILD_NUMBER/g task-definition.jibri.json
+      - sed -i s/ENV/$ENV/g task-definition.jibri.json
+      - sed -i s/SERVICE/$SERVICE/g task-definition.jibri.json
+      - sed -i s/REPOSITORY_URI/$REPOSITORY_URI/g task-definition.jibri.json
+
+      ### Update web Appspec Script
+      - echo updating appspec.jibri.json with evnvironment name and service name
+      - sed -i s/latest/$REVISION/g appspec.jibri.json
+      - sed -i s/ENV/$ENV/g appspec.jibri.json
+      - sed -i s/SERVICE/$SERVICE/g appspec.jibri.json
+
+      
+  post_build:
+    commands:
+      ### pushing docker images to AWS ECR
+      - echo pushing docker images AWS ECR
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-web-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-web-latest
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jvb-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jvb-latest
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jicofo-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jicofo-latest
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-prosody-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-prosody-latest
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jibri-$CODEBUILD_BUILD_NUMBER
+      - docker push $REPOSITORY_URI/$SERVICE:$ENV-jibri-latest
+      
+
+artifacts:
+  files:
+    - '**.*'
