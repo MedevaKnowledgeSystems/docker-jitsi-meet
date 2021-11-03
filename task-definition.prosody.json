@@ -23,6 +23,12 @@
         "name": "ENV-SERVICE-prosody"
       }
     ],
+    "environmentFiles": [
+      {
+        "value": "arn:aws:s3:::medeva-test/prosody/.env",
+        "type": "s3"
+      }
+    ],
     "family": "ENV-SERVICE-prosody",
   "networkMode": "awsvpc"
 }
