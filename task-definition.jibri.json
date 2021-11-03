@@ -23,6 +23,12 @@
         "name": "ENV-SERVICE-jibri"
       }
     ],
+    "environmentFiles": [
+      {
+        "value": "arn:aws:s3:::medeva-test/jibri/.env",
+        "type": "s3"
+      }
+    ],
     "family": "ENV-SERVICE-jibri",
   "networkMode": "awsvpc"
 }
