@@ -23,6 +23,12 @@
         "name": "ENV-SERVICE-jicofo"
       }
     ],
+    "environmentFiles": [
+      {
+        "value": "arn:aws:s3:::medeva-test/jicofo/.env",
+        "type": "s3"
+      }
+    ],
     "family": "ENV-SERVICE-jicofo",
   "networkMode": "awsvpc"
 }
