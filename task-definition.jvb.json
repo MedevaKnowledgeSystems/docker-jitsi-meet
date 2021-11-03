@@ -23,6 +23,12 @@
         "name": "ENV-SERVICE-jvb"
       }
     ],
+    "environmentFiles": [
+      {
+        "value": "arn:aws:s3:::medeva-test/jvb/.env",
+        "type": "s3"
+      }
+    ],
     "family": "ENV-SERVICE-jvb",
   "networkMode": "awsvpc"
 }
