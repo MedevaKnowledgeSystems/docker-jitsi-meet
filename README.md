@@ -1,6 +1,6 @@
 # Jitsi Meet on Medeva
 
-Jist Setup
+Jitsi Setup
 +++++++++++
 
 Server Setup:-
